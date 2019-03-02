@@ -1,0 +1,318 @@
+1,用户和权限
+a.用户
+	/etc/passwd	存放用户配置文件
+	/etc/shadow	存放用户密码配置文件
+	/etc/group	存放组信息的位置eg:tail -2 /etc/group
+	创建	
+		sudo adduser simon
+			创建用户simon
+		sudo passwd simon
+			给simon用户设置密码
+	修改	
+		锁定/解锁
+		sudo usermod -L simon
+			锁定simon用户
+		sudo usermod -U simon
+			解锁simon用户
+	注意：安装ssh服务(连接linux的协议)
+		sudo apt-get install openssh-server
+	注意：远程拷贝文件
+		scp 目标 本pi地
+		sudo scp mememda zelin@192.168.7.52:/home/zelin
+	删除
+		sudo deluser simon
+			删除simon用户
+a.权限
+	查看权限ls -l或者ll
+	-rw-r--r-- 1heygor heygor 9131 1月 7 16:44 examples.desktop
+	文件属性信息
+	1.文件类型	d:目录		-:普通文件
+	2-10文件权限
+	11.文件节点
+	12.拥有者
+	13.拥有组
+	14.文件大小
+	15.最后修改时间
+	16文件名
+	b1.常用权限
+		r:读
+			目录:可以列表显示
+			文件:可以查看内容
+		w:写
+			目录:可以在目录中新建、重命名、删除文件
+			文件:可以修改文件内容
+		x:执行
+			目录:可以进入
+			文件:可执行
+	b2.权限分组
+	rw-	拥有着权限
+	r--	拥有组权限
+	r--	其他人权限
+	b3.判断权限的过程
+	1.判断用户是否为文件拥有者，如果是，赋予拥有者权限
+	2.如果不是，判断是否为拥有组成员，如果是，赋予权限
+	3.如果不是，赋予其他人权限
+	b4.修改文件权限
+	chmod直接修改权限
+		1.字符方式
+		u	拥有者
+		g	拥有组
+		o	其他人
+		a	所有人
+		chmod u+x examples.desktop	拥有者增加执行权限
+		chmod g+x，o+x examples.desktop	拥有组和其他人增加执行权限
+		chmod a-x examples.desktop	所有人取消执行权限
+		2数字方式
+		r:4
+		w:2
+		x:1
+		-:0
+		chmod 000 examples.desktop	所有用户没有如何权限
+		chmod 777 examples.desktop	所有用户拥有读写执行权限
+	chmod通过修改文件属主修改权限
+		sudo chmod gaga examples.desktop	修改文件拥有者为gaga
+		sudo chown :bin examples.desktop	修改文件拥有组为bin
+		sudo chmod heygor:heygor examples.desktop修改文件的拥有者和拥有组为heygor
+	补充:id用户	查看组信息
+2.搜索和管道
+a.搜索
+	find	搜文件
+		find /home/heygor-name passwd
+			/home/heygor搜索名字为passwd的文件
+		find /etc/ -name *.conf
+			/etc目录下搜索文件名字以.conf结尾的文件
+	locate	搜文件
+		locate passwd
+			系统中搜索文件名和passwd相关的文件
+	updatedb刷新系统数据库
+	grep	搜内容
+		grep root passwd
+			搜索passwd文件中含有root的行
+		grep ^r passwd
+			搜索passwd文件中以r开头的内容
+		grep bash$ passwd
+			搜索passwd文件中以bash结尾的行
+b.管道
+	前面的输出作为后面的输入
+	head -7 passwd |tail -1
+		查看第7行的内容
+3.命令管理
+	top	监控系统资源
+	ps -ef	查看系统中所有进程
+		ps -ef |grep sshd	查看系统中ssh进程是否正常运行
+		ps -ef |grep mysqld	查看mysql进程是否正常运行
+		ps -ef |grep tomcat	查看tomcat进程是否正常运行
+		ps -ef |grep httpd	查看apache进程是否正常运行
+	netstat -an查看系统中开放的所有端口
+		netstat -an |grep 22	查看ssh端口是否正行
+		netstat -an |grep 3306	查看mysql端口是否正常
+		netstat -an |grep 80	查看apache端口是否正常
+	kill	杀死进程
+		-15	温柔的结束进程
+		-9	暴力结束
+		pid	进程id(安装pip的命令:sudo apt install python-pip)
+		free -m	查看系统内存情况
+		vmstat	监控系统资源
+		ifconfig监控网络情况
+		df -h	监控磁盘使用率
+		mount	查看系统挂载情况
+4.ubuntu下网络设置
+	a.搜索一个没人使用或者现在的IP
+		ping 192.168.7.253
+		IP地址192.168.7.1-192.168.7.254
+		网段:192.168.7.0
+		广播地址:192.168.7.255
+	b.修改ubuntu的网卡设置
+		sudo vim /etc/network/interfaces
+		增加内容:
+		auto ens33
+		iface ens33 inet static
+		address 192.168.7.198
+		netmask 155.255.254.0
+		gateway 192.168.7.1
+		注意:修改配置后必须重启网络
+		sudo /etc/init.d/networking restart
+		注意:如果重启后不生效，重启系统
+	c.设置主机名
+		sudo vim /etc/hostname
+		heygor-ser
+		注意:重启系统后生效
+	d.绑定主机名
+		sudo vim /etc/hosts
+		增加内容ip 主机名
+		192.168.7.253  heygor-ser
+		注意:安装系统后设置IP，主机名，主机名绑定
+	e.启动模式
+		sudo init 0	关机
+		sudo init 3	进入字符模式
+		sudo init 5	进入图形模式
+		sudo init 6	重启
+5.nfs服务搭建
+	nfs:网络文件系统，可以在×nix系统中进行文件共享，也是nas(网络附加存储)
+	nfs架构:c/s架构(c:客户端  s:服务器)
+	a.软件包的安装
+		sudo apt-get install nfs-kernel-server nfs-common
+		nfs-kernel-server	nfs的主服务
+		nfs-common		nfs的客户端服务
+	b.nfs服务端的配置
+		sudo vim /etc/exports
+		/home/heygor *(rw)
+		共享的目录为		/home/heygor
+		可以进行操作的用户	*所有用户
+		对目录的权限		rw读写
+		重启nfs服务生效		sudo /etc/init.d/nfs-kernel-server restart
+	c.nfs的客户端配置
+		查看nfs服务的共享目录
+		showmount -e nfs服务器的IP
+		挂载nfs服务到本地
+		sudo mount 192.168.7.198:/home/heygor /mnt
+			(查看挂载情况:mount)
+	补充:取消挂载(umount)	(取消挂载的命令:sudo umount /mnt，查看取消挂载:ls mnt)
+	客户端---------------网络---------------服务端
+	192.168.7.100				192.168.7.198
+	nfs-common				nfs-kernel-server
+						/etc/exports
+	sudo mount 192.168.7.198:/home/heygor /mnt
+	通过访问/mnt目录来访问网络硬盘192.168.7.197：/home/heygor内容
+6.dns服务器搭建
+a.访问网在的过程
+浏览器---www.sina.com.cn---网络---电信DNS服务器[域名--IP]---sina服务器
+www.baidu.com
+www.sina.com
+FQDN:完全合格域名
+主机头、域(组织、范围)
+baidu.com	baidu是主机头	.com是域
+.根域	.com	baidu.com	yun.baidu.com
+b.DNS服务器解析类型
+1>域名---IP(正向解析)
+2>IP---域名(反向解析)
+1)dns服务器软件安装
+	sudo apt-get install bind9
+2)配置域名解析文件
+	sudo vim /etc/bind/named.conf.local
+	zone "heygor".com{
+		type master;
+		file "db.heygor.com";
+	};
+3）编写heygor.com的解析文件
+	sudo cp /etc/bind/db.local /var/cache/bind/db.heygor.com
+	拷贝模板文件到指定位置命名(必须和上面配置的file对应)
+@	IN	A	10.10.101.10	#(增加域名需要解析为的IP)
+4）重启bind9服务
+	sudo /etc/init.d/bind9 restart
+补充:客户端的服务配置
+	sudo vim /etc/resolv.conf
+	nameserver 192.168.7.198
+补充:域名解析命令nslookup
+	nslookup heygor.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

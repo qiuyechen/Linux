@@ -1,0 +1,72 @@
+1.常见操作系統平台
+a.unix
+	mac os
+	ios
+	aix
+b.linux
+	redhat		centos	(这2类搭建服务用常用的)
+	suse		opensuse
+	ubuntu(开发常用)kili(安全用)
+	cos		红旗
+c.windows 
+	server 
+		winserver 03 08 12 16
+	desktop
+        	win7  win10  winxp  win8  winme
+2.ubuntu基础
+a.目录结构
+	linux下一切皆为文件
+	目录：linux下的文件夹
+	/	根目录		存放linux下所有文件
+		/bin		存放linux普通用户命令的位置
+                /boot   	存放系统启动时所需的引导文件
+	        /dev    	存放系统硬件的位置
+	        /etc    	存放系统配置文件的位置
+  	        /home   	普通用户的家目录所在目录
+                注意：  	家目录就是用户登录系统后，默认所在的目录
+	        /sbin   	存放管理员的命令的位置
+	        /tmp    	存放系统临时文件的位置(提权)
+	        /var    	存放系统日志信息的位置
+		/lib/lib64	存放系统库文件的位置
+		/mmt		系统默认挂载点(挂载点：硬件与系统建立连接的过程，访问时候通过挂载目录方式访问目录)
+		/opt		普通用户操作所在目录
+		/root		管理员的家目录
+b.终端简介(bash)
+	heigor@heigor-s:~$
+	heigor		当前登录用户的用户名
+	@heigor-s	当前主机的主机名(hostname)
+	补充：查看系统主机名   hostname
+	~		当前所在目录为家目录
+	$		当前用户权限微普通用户
+	#		当前用户权限为管理员
+	常见脚本语言:bash,kshell,cshell
+c.基础命令
+	
+	c1我是谁
+	who当前登录系统的所有用户的登录属性信息(:0	代表本地登录)
+	who am i当前登录用户的属性信息
+	whoami当前登录用户的用户名
+
+	c2我在哪
+	pwd当前目录所在的绝对路径
+	绝对路径：以/开头的路径
+	相对路径：不以/开头的路径
+	.当前目录
+	..上一级目录
+
+	c3我要去哪
+	ls		显示当前目录下的所有文件的文件名ls(list)列表
+	ls -a           显示当前目录下所有文件名，包括隐藏文件(隐藏文件以'.'开头的)
+	ls -l		查看当前目录下所有文件属性信息
+	ls -l /home/heygor 查看/home/heygor目录的文件属性信息
+
+	c4我怎么去
+	cd		目录切换到家目录
+	cd /var/log	目录切换到/var/log目录下
+	cd ..		目录切换到上一级目录
+	cd ~		目录切换微家目录
+	cd -		目录切换到上一次操作所在目录	
+		
+
+
+
