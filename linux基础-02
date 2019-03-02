@@ -6,6 +6,7 @@ whoami
 pwd
 ls
 cd
+tailf 文件名   监控文件名
 安装vim:sudo apt-get install vim
 卸载vim:sudo apt-get remove vim-commom	
 安装分屏:sudo apt-get install terminator
