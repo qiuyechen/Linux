@@ -1,0 +1,4 @@
+打开终端输入：wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+（先确定使用的系统是32位还是64位，此链接是64位的）
+下载完成后，在终端继续输入：sudo dpkg -i google-chrome-stable_current_amd64.deb
+安装完成后关闭终端
