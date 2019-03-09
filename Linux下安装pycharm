@@ -1,0 +1,7 @@
+到官网下载对应版本的pychrm
+（链接：https://www.jetbrains.com/pycharm/download/#section=windows
+或：https://www.jetbrains.com/pycharm/
+打开下载所在目录，解压
+打开解压好的目录，打开bin目录
+空白处打开终端，输入：sh ./pycharm.sh 然后回车
+接着就可以打开pycharm
